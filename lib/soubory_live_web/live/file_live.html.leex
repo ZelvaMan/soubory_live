@@ -6,7 +6,7 @@
 <i>File detail</i>
 <h1><%=@info.name%></h1>
 <tr>
-  <td> <%=live_redirect "back to:" <> @parent, to: Routes.files_path(@socket, :files, @parent)  %></td>
+  <td> <%=live_redirect "back to: " <> @parent, to: Routes.files_path(@socket, :files, @parent)  %></td>
 </tr>
 <br>
 <table>
