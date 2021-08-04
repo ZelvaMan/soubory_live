@@ -71,4 +71,8 @@ defmodule SouboryLiveWeb.FilesLive do
     {:noreply,
      assign(socket, files: FileHelper.order_infos(socket.assigns.files, order), order: order)}
   end
+
+  def handle_event("chck_all", _, socket) do
+    {:noreply, socket}
+  end
 end
