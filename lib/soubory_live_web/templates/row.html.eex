@@ -1,0 +1,20 @@
+<%= case @file.type do %>
+
+<%= :directory -> %>
+
+<td><img src="/images/folder.png" style="max-width:2em;"></td>
+<td> <%= link @file.name, to: Routes.files_path(@conn, :index,  @file.fullpath, orderby: @order)  %></td>
+<%# <td><%=  Atom.to_string(file.type)  % ></td> %>
+<td></td>
+<td></td>
+<% :regular -> %>
+
+<td></td>
+<td class="black-a"><%= link @file.name, to: Routes.file_path(@conn, :show,  @file.fullpath, orderby: @order)  %>
+</td>
+<%# <td><%=  Atom.to_string(file.type)  % ></td> %>
+<td><%=  @file.extension  %></td>
+<td><%= if (@file.size == 0) do " "else "#{Float.ceil(@file.size/1000,1)}kb" end %></td>
+<% _ -> %>
+
+<% end%>

@@ -1,0 +1,65 @@
+<%
+  alias Soubory.Models.SimpleFile
+
+%>
+<style>
+  .inline {
+    display: flex;
+    flex-direction: row;
+  }
+</style>
+
+<div class="phx-hero">
+  <h1><b>Ultimate</b> File Explorer (now live)</h1>
+  path: <%= @path %>
+
+  <form phx-submit="search" class="inline">
+    <input type="text" name="search_query" placeholder="search" value="<%= @sq%>">
+    <button type="submit">search</button>
+  </form>
+
+
+  <table>
+    <tr class="black-a">
+      <th phx-click="type_sort">Type</th>
+      <th phx-click="name_sort">Name</th>
+      <th>Extension</th>
+      <th>Size</th>
+
+    </tr>
+    <tr>
+      <td phx-click="go_up">../</td>
+    </tr>
+    <%= for file <- @files do %>
+    <tr>
+      <%= case file.type do %>
+
+      <%= :directory -> %>
+
+      <td><img src="/images/folder.png" style="max-width:2em;"></td>
+      <td phx-click="change_path" phx-value-new_path="<%= file.fullpath %>"> <%=file.name%></td>
+      <%# <td><%=  Atom.to_string(file.type)  % ></td> %>
+      <td></td>
+      <td></td>
+      <% :regular -> %>
+
+      <td></td>
+      <td class="black-a">
+        <%= live_redirect file.name, to: Routes.file_path(@socket, :show, file.fullpath) %>
+      </td>
+      <%# <td><%=  Atom.to_string(file.type)  % ></td> %>
+      <td><%=  file.extension  %></td>
+      <td><%= if (file.size == 0) do " "else "#{Float.ceil(file.size/1000,1)}kb" end %></td>
+      <% _ -> %>
+
+      <% end%>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<style>
+  .black-a * {
+    color: black;
+  }
+</style>
