@@ -1,6 +1,5 @@
 <%
   alias Soubory.Models.SimpleFile
-
 %>
 <style>
   .inline {
@@ -11,8 +10,7 @@
 
 <div class="phx-hero">
   <h1><b>Ultimate</b> File Explorer (now live)</h1>
-  path: <%= @path %>
-
+  path: <%= @path %> <br>
   <form phx-submit="search" class="inline">
     <input type="text" name="search_query" placeholder="search" value="<%= @sq%>">
     <button type="submit">search</button>
@@ -21,7 +19,7 @@
 
   <table>
     <tr class="black-a">
-      <th> <input type="checkbox" phx-click="chkb_all"></th>
+      <th> <input type="checkbox" phx-click="select_all" <%= if @all_selected do "checked" else "" end %>></th>
       <th phx-click="type_sort">Type</th>
       <th phx-click="name_sort">Name</th>
       <th>Extension</th>
@@ -33,6 +31,9 @@
     </tr>
     <%= for file <- @files do %>
     <tr>
+      <td>
+        <input type="checkbox" phx-click="select" phx-value-fullpath="<%= file.fullpath%>"
+          <%=  if Enum.member?(@selected, file.fullpath) do "checked" else "" end %>></td>
       <%= case file.type do %>
 
       <%= :directory -> %>

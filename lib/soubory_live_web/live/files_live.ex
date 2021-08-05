@@ -10,7 +10,10 @@ defmodule SouboryLiveWeb.FilesLive do
        path: path,
        files: FileHelper.get_infos(path),
        sq: "",
-       order: nil
+       order: nil,
+       # list of fullpaths of selected files and folders
+       selected: [],
+       all_selected: false
      )}
   end
 
@@ -24,7 +27,10 @@ defmodule SouboryLiveWeb.FilesLive do
       |> FileHelper.make_path_valid()
 
     # {:noreply, assign(socket, files: FileHelper.get_infos(path), sq: "", path: path)}
-    {:noreply, push_patch(socket, to: Routes.files_path(socket, :files, path))}
+    {:noreply,
+     push_patch(assign(socket, selected: [], all_selected: false),
+       to: Routes.files_path(socket, :files, path)
+     )}
   end
 
   def handle_event("go_up", _, socket) do
@@ -34,7 +40,10 @@ defmodule SouboryLiveWeb.FilesLive do
       |> FileHelper.make_path_valid()
 
     # {:noreply, assign(socket, files: FileHelper.get_infos(path), sq: "", path: path)}
-    {:noreply, push_patch(socket, to: Routes.files_path(socket, :files, path))}
+    {:noreply,
+     push_patch(assign(socket, selected: [], all_selected: false),
+       to: Routes.files_path(socket, :files, path)
+     )}
   end
 
   def handle_params(params, _uri, socket) do
@@ -72,7 +81,32 @@ defmodule SouboryLiveWeb.FilesLive do
      assign(socket, files: FileHelper.order_infos(socket.assigns.files, order), order: order)}
   end
 
-  def handle_event("chck_all", _, socket) do
-    {:noreply, socket}
+  def handle_event("select_all", _, socket) do
+    case socket.assigns.selected do
+      [] ->
+        {:noreply,
+         assign(socket,
+           all_selected: true,
+           selected: FileHelper.get_all_directories(socket.assigns.path)
+         )}
+
+      _ ->
+        {:noreply, assign(socket, all_selected: false, selected: [])}
+    end
+  end
+
+  def handle_event("select", %{"fullpath" => fullpath}, socket) do
+    old_selected = socket.assigns.selected
+
+    new_selected =
+      case Enum.member?(old_selected, fullpath) do
+        true ->
+          List.delete(old_selected, fullpath)
+
+        false ->
+          old_selected ++ [fullpath]
+      end
+
+    {:noreply, assign(socket, selected: new_selected)}
   end
 end

@@ -155,4 +155,10 @@ defmodule SouboryLive.FileHelper do
     # Application.get_env(:soubory, SouboryLiveWeb.Endpoint)[:path]
     "C:/TEST/"
   end
+
+  def get_all_directories(path) do
+    Enum.map(get_infos(path), fn x ->
+      x.fullpath
+    end)
+  end
 end
