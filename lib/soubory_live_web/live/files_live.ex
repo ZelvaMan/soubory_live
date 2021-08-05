@@ -109,4 +109,7 @@ defmodule SouboryLiveWeb.FilesLive do
 
     {:noreply, assign(socket, selected: new_selected)}
   end
+
+  def handle_event("create_zip", _, socket) do
+  end
 end

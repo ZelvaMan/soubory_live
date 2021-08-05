@@ -7,6 +7,7 @@ defmodule SouboryLive.Application do
 
   def start(_type, _args) do
     children = [
+      {DynamicSupervisor, strategy: :one_for_one, name: SouboryLive.ZipDynamicSupervisor},
       # Start the Telemetry supervisor
       SouboryLiveWeb.Telemetry,
       # Start the PubSub system
