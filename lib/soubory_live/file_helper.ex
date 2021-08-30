@@ -163,6 +163,6 @@ defmodule SouboryLive.FileHelper do
   end
 
   def generate_zip_path() do
-    Path.join([:code.priv_dir(:soubory_live), "/static/zip", UUID.uuid1()])
+    Path.join([:code.priv_dir(:soubory_live), "/static/zip/", UUID.uuid1() <> ".zip"])
   end
 end

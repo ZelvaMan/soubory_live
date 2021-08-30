@@ -1,10 +1,10 @@
 defmodule SouboryLive.ZipManager do
   alias SouboryLive.FileHelper
 
-  def create_zip(source_pid, selected) do
+  def create_zip(socket, selected) do
     DynamicSupervisor.start_child(
       SouboryLive.ZipDynamicSupervisor,
-      {SouboryLive.ZipWorker, [source_pid, selected]}
+      {SouboryLive.ZipWorker, [socket, selected]}
     )
   end
 end

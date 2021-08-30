@@ -1,6 +1,7 @@
 defmodule SouboryLiveWeb.FilesLive do
   use SouboryLiveWeb, :live_view
   alias SouboryLive.FileHelper
+  require Logger
 
   def mount(params, _session, socket) do
     path = FileHelper.make_path_valid(params["path"] || FileHelper.allowed_path())
@@ -13,7 +14,8 @@ defmodule SouboryLiveWeb.FilesLive do
        order: nil,
        # list of fullpaths of selected files and folders
        selected: [],
-       all_selected: false
+       all_selected: false,
+       file_name: nil
      )}
   end
 
@@ -111,5 +113,12 @@ defmodule SouboryLiveWeb.FilesLive do
   end
 
   def handle_event("create_zip", _, socket) do
+    SouboryLive.ZipManager.create_zip(socket, socket.assigns.selected)
+    {:noreply, socket}
+  end
+
+  def handle_event("show_path", %{"file_name" => name}, socket) do
+    Logger.info("show_path called")
+    {:noreply, assign(socket, file_name: "/zip/" <> name)}
   end
 end

@@ -11,10 +11,17 @@
 <div class="phx-hero">
   <h1><b>Ultimate</b> File Explorer (now live)</h1>
   path: <%= @path %> <br>
-  <form phx-submit="search" class="inline">
-    <input type="text" name="search_query" placeholder="search" value="<%= @sq%>">
-    <button type="submit">search</button>
+  <form phx-submit="search">
+    <div class=inline>
+      <input type="text" name="search_query" placeholder="search" value="<%= @sq%>">
+      <button type="submit">search</button>
+    </div>
   </form>
+  <div class="inline">
+    <button phx-click="create_zip"> Create zip </button>
+    <%= @file_name%></div>
+
+
 
 
   <table>
