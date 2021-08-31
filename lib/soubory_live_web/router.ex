@@ -19,6 +19,8 @@ defmodule SouboryLiveWeb.Router do
     live "/files", FilesLive, :files
     live "/files/:path", FilesLive, :files
     live "/file/:path", FileLive, :show
+
+    get "/download/zip/:path", DownloadController, :zip
   end
 
   # Other scopes may use custom stacks.

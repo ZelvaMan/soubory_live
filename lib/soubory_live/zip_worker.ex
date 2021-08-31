@@ -3,7 +3,7 @@ defmodule SouboryLive.ZipWorker do
   alias SouboryLive.FileHelper
   require Logger
 
-  def start_link([socket, selected]) do
+  def start_link([finish_callback, selected]) do
     files = selected |> Enum.map(&String.to_charlist/1)
     path = FileHelper.generate_zip_path()
     {status, _} = :zip.create(path, files)
@@ -12,9 +12,7 @@ defmodule SouboryLive.ZipWorker do
       :ok ->
         Logger.info("zip created schould push show_path")
 
-        Logger.info(
-          Phoenix.LiveView.push_event(socket, "show_path", %{file_name: Path.basename(path)})
-        )
+        finish_callback.(path)
 
       _ ->
         :error

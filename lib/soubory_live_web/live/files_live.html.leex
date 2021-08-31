@@ -19,7 +19,9 @@
   </form>
   <div class="inline">
     <button phx-click="create_zip"> Create zip </button>
-    <%= @file_name%></div>
+    <%= if @file_path != nil do link("download zip",
+          to: Routes.download_path(@socket, :zip, @file_path), method: :get,
+          target: "_blank") end %></div>
 
 
 

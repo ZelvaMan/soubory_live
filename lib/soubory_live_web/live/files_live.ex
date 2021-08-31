@@ -15,7 +15,7 @@ defmodule SouboryLiveWeb.FilesLive do
        # list of fullpaths of selected files and folders
        selected: [],
        all_selected: false,
-       file_name: nil
+       file_path: nil
      )}
   end
 
@@ -113,12 +113,26 @@ defmodule SouboryLiveWeb.FilesLive do
   end
 
   def handle_event("create_zip", _, socket) do
-    SouboryLive.ZipManager.create_zip(socket, socket.assigns.selected)
+    self_pid = self()
+
+    SouboryLive.ZipManager.create_zip(
+      fn path ->
+        send(self_pid, {:zip_created, path})
+      end,
+      socket.assigns.selected
+    )
+
     {:noreply, socket}
   end
 
-  def handle_event("show_path", %{"file_name" => name}, socket) do
-    Logger.info("show_path called")
-    {:noreply, assign(socket, file_name: "/zip/" <> name)}
+  # def handle_event("show_path", name, socket) do
+  #   Logger.info("show_path called")
+  #   rel_path = "/zip/" <> Path.basename(name)
+  #   {:noreply, assign(socket, file_name: rel_path)}
+  # end
+  @impl true
+  def handle_info({:zip_created, path}, socket) do
+    Logger.info("handling info ...")
+    {:noreply, assign(socket, file_path: path)}
   end
 end
