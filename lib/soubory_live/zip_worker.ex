@@ -10,7 +10,7 @@ defmodule SouboryLive.ZipWorker do
 
     case status do
       :ok ->
-        Logger.info("zip created schould push show_path")
+        Logger.info("zip created name: #{Path.basename(path)}")
 
         finish_callback.(path)
 

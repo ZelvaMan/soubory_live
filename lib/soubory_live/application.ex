@@ -13,9 +13,10 @@ defmodule SouboryLive.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: SouboryLive.PubSub},
       # Start the Endpoint (http/https)
-      SouboryLiveWeb.Endpoint
+      SouboryLiveWeb.Endpoint,
       # Start a worker by calling: SouboryLive.Worker.start_link(arg)
       # {SouboryLive.Worker, arg}
+      SouboryLive.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

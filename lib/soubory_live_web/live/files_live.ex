@@ -132,7 +132,6 @@ defmodule SouboryLiveWeb.FilesLive do
   # end
   @impl true
   def handle_info({:zip_created, path}, socket) do
-    Logger.info("handling info ...")
     {:noreply, assign(socket, file_path: path)}
   end
 end

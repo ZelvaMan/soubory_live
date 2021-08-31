@@ -163,6 +163,18 @@ defmodule SouboryLive.FileHelper do
   end
 
   def generate_zip_path() do
-    Path.join([:code.priv_dir(:soubory_live), "/static/zip/", UUID.uuid1() <> ".zip"])
+    Path.join([zip_folder_path(), UUID.uuid1() <> ".zip"])
+  end
+
+  def zip_folder_path() do
+    Path.join([:code.priv_dir(:soubory_live), "/static/zip/"])
+  end
+
+  def delete_zips() do
+    Logger.info("deleting zips...")
+
+    Enum.each(File.ls!(zip_folder_path()), fn x ->
+      File.rm_rf(Path.join(zip_folder_path(), x))
+    end)
   end
 end
