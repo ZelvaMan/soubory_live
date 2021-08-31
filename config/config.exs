@@ -27,7 +27,7 @@ config :phoenix, :json_library, Jason
 config :soubory_live, SouboryLive.Scheduler,
   jobs: [
     # Every minute
-    {"* * * * *", {SouboryLive.FileHelper, :delete_zips, []}}
+    {"*/5 * * * *", {SouboryLive.FileHelper, :delete_zips, []}}
   ]
 
 # Import environment specific config. This must remain at the bottom
